@@ -15,12 +15,21 @@ static void reload_timer()
   write_csr_tmintclear(CSR_TMINTCLR_TI);
 }
 
+#define LAB1_EX2
+#define _SHOW_100_TICKS
+
 int clock_int_handler(void * data)
 {
 #ifdef LAB1_EX2
+  ticks++;
   // LAB1 EXERCISE2: YOUR CODE
   // (1) count ticks here
 #ifdef _SHOW_100_TICKS
+  if(ticks%100==0)
+  {
+    kprintf("100 ticks\n");
+    ticks=0;
+  }
   // (2) if ticks % 100 == 0 then call kprintf to print "100 ticks"
 #endif
 #endif
@@ -43,4 +52,5 @@ clock_init(void) {
   pic_enable(TIMER0_IRQ);
   kprintf("++setup timer interrupts\n");
 }
+
 

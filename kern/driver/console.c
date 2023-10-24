@@ -90,6 +90,8 @@ serial_proc_data(void) {
     return c;
 }
 
+#define LAB1_EX3
+#define _SHOW_SERIAL_INPUT
 
 void serial_int_handler(void *opaque)
 {
@@ -99,6 +101,7 @@ void serial_int_handler(void *opaque)
     //int c = serial_proc_data();
     int c = cons_getc();
 #if defined(LAB1_EX3) && defined(_SHOW_SERIAL_INPUT)
+kprintf("got input %c\n", c);
     // LAB1 EXERCISE3: YOUR CODE
 #endif
 #ifdef LAB4_EX2

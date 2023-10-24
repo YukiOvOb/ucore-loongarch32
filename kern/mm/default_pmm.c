@@ -104,6 +104,8 @@ default_init(void) {
     nr_free = 0;
 }
 
+#define LAB2_EX1
+
 static void
 default_init_memmap(struct Page *base, size_t n) {
 #ifdef LAB2_EX1

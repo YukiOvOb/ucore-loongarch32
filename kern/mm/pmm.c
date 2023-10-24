@@ -210,6 +210,9 @@ pmm_init(void) {
 //  la:     the linear address need to map
 //  create: a logical value to decide if alloc a page for PT
 // return vaule: the kernel virtual address of this pte
+
+#define LAB2_EX2
+
 pte_t *
 get_pte(pde_t *pgdir, uintptr_t la, bool create) {
 #ifdef LAB2_EX2
