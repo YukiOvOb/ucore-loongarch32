@@ -230,7 +230,7 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
      *-   set_page_ref(page,1) : means the page be referenced by one time
      *-   page2pa(page): get the physical address of memory which this (struct Page *) page  manages
      *-   struct Page * alloc_page() : allocation a page
-     *   memset(void *s, char c, size_t n) : sets the first n bytes of the memory area pointed by s
+     *-   memset(void *s, char c, size_t n) : sets the first n bytes of the memory area pointed by s
      *                                       to the specified value c.
      * DEFINEs:
      *   PTE_P           0x001                   // page table/directory entry flags bit : Present
@@ -247,23 +247,22 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
             {
             struct Page *new_page=alloc_page();    
             set_page_ref(new_page,1);  // (4) set page reference   
-                                        
-                                        // (5) get linear address of page
-            
-            memset(void *s, PTE_U, 12)       // (6) clear page content using memset                    
+                                      
+            // linear addr = phy addr + 0xa0000000       // (5) get linear address of page
+            uintptr_t pa =page2pa(new_page) + 0xa0000000;  //uintptr_t pa = 0; 
+
+            memset(pa, 1, 1);       // (6) clear page content using memset 
+
+            memset(pa+27, 1, 1);      // (7) set page directory entry's permission        
+
+            return KADDR(pa);          // (8) return page table entry   
             }
             else
             {
             return 0;
             }  
-        }              
-                        
-                          
-        uintptr_t pa = 0; 
-                          
-                          // (7) set page directory entry's permission
-    }
-    return NULL;          // (8) return page table entry
+        }                                   
+    }   
 #endif
 }
 
