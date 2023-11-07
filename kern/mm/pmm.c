@@ -225,11 +225,11 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
      *
      * Some Useful MACROs and DEFINEs, you can use them in below implementation.
      * MACROs or Functions:
-     *   PDX(la) = the index of page directory entry of VIRTUAL ADDRESS la.
+     *-   PDX(la) = the index of page directory entry of VIRTUAL ADDRESS la.
      *   KADDR(pa) : takes a physical address and returns the corresponding kernel virtual address.
-     *   set_page_ref(page,1) : means the page be referenced by one time
-     *   page2pa(page): get the physical address of memory which this (struct Page *) page  manages
-     *   struct Page * alloc_page() : allocation a page
+     *-   set_page_ref(page,1) : means the page be referenced by one time
+     *-   page2pa(page): get the physical address of memory which this (struct Page *) page  manages
+     *-   struct Page * alloc_page() : allocation a page
      *   memset(void *s, char c, size_t n) : sets the first n bytes of the memory area pointed by s
      *                                       to the specified value c.
      * DEFINEs:
@@ -237,13 +237,30 @@ get_pte(pde_t *pgdir, uintptr_t la, bool create) {
      *   PTE_W           0x002                   // page table/directory entry flags bit : Writeable
      *   PTE_U           0x004                   // page table/directory entry flags bit : User can access
      */
-    pde_t *pdep = NULL;   // (1) find page directory entry
-    if (0) {              // (2) check if entry is not present
-                          // (3) check if creating is needed, then alloc page for page table
-                          // CAUTION: this page is used for page table, not for common data page
-                          // (4) set page reference
-        uintptr_t pa = 0; // (5) get linear address of page
-                          // (6) clear page content using memset
+    pde_t *pdep = NULL;   
+    if (0) {             
+        PDX(la);        // (1) find page directory entry
+        if(page2pa(pgdir==0x001))   // (2) check if entry is not present
+        {
+            if(create)      // (3) check if creating is needed, then alloc page for page table 
+                        // CAUTION: this page is used for page table, not for common data page
+            {
+            struct Page *new_page=alloc_page();    
+            set_page_ref(new_page,1);  // (4) set page reference   
+                                        
+                                        // (5) get linear address of page
+            
+            memset(void *s, PTE_U, 12)       // (6) clear page content using memset                    
+            }
+            else
+            {
+            return 0;
+            }  
+        }              
+                        
+                          
+        uintptr_t pa = 0; 
+                          
                           // (7) set page directory entry's permission
     }
     return NULL;          // (8) return page table entry
